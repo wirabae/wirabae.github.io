@@ -1,0 +1,283 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Random Password Generator</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-toggle@2.2.2/css/bootstrap-toggle.min.css" integrity="sha256-rDWX6XrmRttWyVBePhmrpHnnZ1EPmM6WQRQl6h0h7J8=" crossorigin="anonymous">
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+		<link rel="icon" type="image/png" href="favicon.png" />
+	</head>
+	<body class="bg-light">
+	<!--	<a href="https://github.com/clicface/passwordgenerator"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a> -->
+		<h1 class="text-center"><a href="#">Random Password Generator</a></h1>
+		<div class="m-5 text-center">
+			<span lang="en">Pilih opsi di bawah lalu kirim, dan Anda akan mendapatkan kata sandi unik Anda sendiri yang dibuat secara instan oleh skrip kami.</span><br />
+			<span lang="en">Semua kata sandi acak yang dihasilkan oleh perangkat lunak ini hanya tersedia di komputer lokal Anda. Tidak ada kata sandi yang ditransfer melalui Internet.</span><br />
+		</div>
+		<div id="option_choice">
+			<form action="#">
+				<div class="my-3 p-3 bg-white rounded box-shadow">
+					<div class="border-bottom pb-2 mb-2 border-gray">
+						<table class="mytable">
+							<tr>
+								<td class="myfirsttd">
+									<input type="number" name="length_chars_select" id="length_chars_select" min="3" max="120" value="16"/>
+								</td>
+								<td>
+									<span lang="en">
+Panjang karakter kata sandi</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="border-bottom pb-2 mb-2 border-gray">
+						<table class="mytable">
+							<tr>
+								<td class="myfirsttd">
+									<input type="checkbox" data-toggle="toggle" name="alphalower_chars_checkbox" id="alphalower_chars_checkbox" checked="checked" />
+								</td>
+								<td>
+									<span lang="en">
+Huruf string</span>
+								</td>
+								<td class="text-right">
+									<span class="chars_example">[ a b c ... x y z ]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="border-bottom pb-2 mb-2 border-gray">
+						<table class="mytable">
+							<tr>
+								<td class="myfirsttd">
+									<input type="checkbox" data-toggle="toggle" name="alphaupper_chars_checkbox" id="alphaupper_chars_checkbox" checked="checked" />
+								</td>
+								<td>
+									<span lang="en">Huruf kapital</span>
+								</td>
+								<td class="text-right">
+									<span class="chars_example">[ A B C ... X Y Z ]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="border-bottom pb-2 mb-2 border-gray">
+						<table class="mytable">
+							<tr>
+								<td class="myfirsttd">
+									<input type="checkbox" data-toggle="toggle" name="num_chars_checkbox" id="num_chars_checkbox" checked="checked" />
+								</td>
+								<td>
+									<span lang="en">Angka</span>
+								</td>
+								<td class="text-right">
+									<span class="chars_example">[ 0 1 2 ... 7 8 9 ]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="border-bottom pb-2 mb-2 border-gray">
+						<table class="mytable">
+							<tr>
+								<td class="myfirsttd">
+									<input type="checkbox" data-toggle="toggle" name="hyphen_dash_underscore" id="hyphen_dash_underscore" checked="checked" />
+								</td>
+								<td>
+									<span lang="en">Tanda hubung, garis bawah</span>
+								</td>
+								<td class="text-right">
+									<span class="chars_example">[ - _ ]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="border-bottom pb-2 mb-2 border-gray">
+						<table class="mytable">
+							<tr>
+								<td class="myfirsttd">
+									<input type="checkbox" data-toggle="toggle" name="special_chars_checkbox" id="special_chars_checkbox" checked="checked" />
+								</td>
+								<td>
+									<span lang="en">Simbol khusus</span>
+								</td>
+								<td class="text-right">
+									<span class="chars_example">[  ~ ! @ ... &lt; &gt; ? ]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div class="pb-2 mb-2">
+						<table class="mytable">
+							<tr>
+								<td>
+									<input type="checkbox" data-toggle="toggle" name="ambiguous_chars_checkbox" id="ambiguous_chars_checkbox" checked="checked"/>
+								</td>
+								<td>
+									<span lang="en">Karakter ambigu</span>
+								</td>
+								<td class="text-right">
+									<span class="chars_example">[ i o 0 O I 1 l ]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="text-center"><button type="button" class="btn btn-default btn-primary btn-lg" id="generate" lang="en">Generate Password</button></div>
+		<div class="text-center" id="password-container" style="display: none;">
+			<div id="password-container-top" class="password-string"></div>
+			<div id="password-container-bottom" class="password-meter"></div>
+			<div id="click-to-copy" class="password-copy-to-clipboard" lang="en" data-clipboard-target="#password-container-top"><span lang="en">Klik di sini untuk menyalin ke clipboard</span></div>
+		</div>
+		<div class="text-center m-5"><span lang="en"></span><br /><span><a href="#" target="_blank"></a></span></div>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js" integrity="sha256-EGs9T1xMHdvM1geM8jPpoo8EZ1V1VRsmcJz8OByENLA=" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap-toggle@2.2.2/js/bootstrap-toggle.min.js" integrity="sha256-eZNgBgutLI47rKzpfUji/dD9t6LRs2gI3YqXKdoDOmo=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/zxcvbn@4.4.2/dist/zxcvbn.js" integrity="sha256-9CxlH0BQastrZiSQ8zjdR6WVHTMSA5xKuP5QkEhPNRo=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.1/dist/clipboard.min.js" integrity="sha256-hIvIxeqhGZF+VVeM55k0mJvWpQ6gTkWk3Emc+NmowYA=" crossorigin="anonymous"></script>
+		<script type="text/javascript">
+			//<![CDATA[
+			(function($) {
+				$.generateRandomPassword = function(length, AlphaLower, AlphaUpper, Num, HypenDashUnderscore, Special, Ambiguous) {
+					length = typeof length !== 'undefined' ? length : 8;
+					AlphaLower = typeof AlphaLower !== 'undefined' ? AlphaLower : true;
+					AlphaUpper = typeof AlphaUpper !== 'undefined' ? AlphaUpper : true;
+					Num = typeof Num !== 'undefined' ? Num : true;
+					HypenDashUnderscore = typeof HypenDashUnderscore !== 'undefined' ? HypenDashUnderscore : false;
+					Special = typeof Special !== 'undefined' ? Special : false;
+					Ambiguous = typeof Ambiguous !== 'undefined' ? Ambiguous : false;
+					var password = '';
+					var chars = '';
+					if (AlphaLower) chars += 'abcdefghjkmnpqrstuvwxyz';
+					if (AlphaUpper) chars += 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+					if (Num) chars += '23456789';
+					if (HypenDashUnderscore) chars += '-_';
+					if (Special) chars += '~!@#$%^&*()=+[]{};:,.<>/?';
+					if (AlphaLower && Ambiguous) chars += 'iol';
+					if (AlphaLower && Ambiguous) chars += 'IO';
+					if (Num && Ambiguous) chars += '01';
+					if (!AlphaLower && !Num && Ambiguous) chars += 'iolIO01';
+					if (chars == '') return window.lang.convert('Please make at least one selection');
+					var list = chars.split('');
+					var len = list.length, i = 0;
+					do {
+						i++;
+						var index = Math.floor(Math.random() * len);
+						password += list[index];
+					} while(i < length);
+					return password;
+				};
+			})(jQuery);
+			
+			$('form').bind('submit', function(e) {
+				e.preventDefault();
+			});
+			
+			$(function() {
+				$('#generate').click(function(event) {
+					var pwd = $.generateRandomPassword(
+						$("#length_chars_select").val(),
+						$("#alphalower_chars_checkbox").is(":checked"),
+						$("#alphaupper_chars_checkbox").is(":checked"),
+						$("#num_chars_checkbox").is(":checked"),
+						$("#hyphen_dash_underscore").is(":checked"),
+						$("#special_chars_checkbox").is(":checked"),
+						$("#ambiguous_chars_checkbox").is(":checked")
+					);
+					var score = zxcvbn(pwd).score;
+					switch(score) {
+						case 0:
+						case 1:
+							var color = '#C33';
+						break;
+						
+						case 2:
+							var color = '#F80';
+						break;
+						
+						case 3:
+							var color = '#FFEC20';
+						break;
+						
+						case 4:
+							var color = '#19ba20';
+						break;
+						
+						default:
+							var color = '#C33';
+					}
+					var image = 'img/' + score + '.jpg';
+					$('#password-container').show();
+					$('#password-container-top').text(pwd);
+					$('#password-container-bottom').css('background', color);
+					event.preventDefault();
+				});
+			});
+			
+			$( '.checkboxlist' ).on( 'click', 'input:checkbox', function () {
+				$( this ).parent().toggleClass( 'checked_item', this.checked ); 
+				$( this ).parent().toggleClass( 'unchecked_item' ); 
+			});
+			
+			/*
+			var lang = new Lang();
+			lang.dynamic('fr', 'langpack/fr.json');
+			lang.init({
+				defaultLang: 'en'
+			});
+			*/
+			
+			$('#alphalower_chars_checkbox').click( function() {
+				$(this).addClass('active').siblings().removeClass('active');
+			});
+			
+			// Tooltip
+			$('#click-to-copy').tooltip({
+				trigger: 'click',
+				placement: 'bottom'
+			});
+			function setTooltip(btn, message) {
+				$(btn).tooltip('hide')
+				.attr('data-original-title', message)
+				.tooltip('show');
+			}
+			function hideTooltip(btn) {
+				setTimeout(function() {
+					$(btn).tooltip('hide');
+				}, 1000);
+			}
+
+			// Clipboard
+			var clipboard = new ClipboardJS('#click-to-copy');
+			clipboard.on('success', function(e) {
+				setTooltip(e.trigger, 'Copied!');
+				hideTooltip(e.trigger);
+			});
+			clipboard.on('error', function(e) {
+				setTooltip(e.trigger, 'Failed!');
+				hideTooltip(e.trigger);
+			});
+			//]]>
+		</script>
+		<!-- Matomo -->
+		<script type="text/javascript">
+		  var _paq = _paq || [];
+		  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+		  _paq.push(['trackPageView']);
+		  _paq.push(['enableLinkTracking']);
+		  (function() {
+			var u="https://analytics.clicface.com/";
+			_paq.push(['setTrackerUrl', u+'piwik.php']);
+			_paq.push(['setSiteId', '25']);
+			var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+			g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+		  })();
+		</script>
+		<!-- End Matomo Code -->
+	</body>
+</html>
