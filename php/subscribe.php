@@ -23,7 +23,7 @@ if(trim($email) == '') {
 // Example $address = "joe.doe@yourdomain.com";
 
 //$address = "example@example.net";
-$address = "anantabose29@gmail.com";
+$address = "oktawiratama@gmail.com";
 
 
 // Configuration option.
