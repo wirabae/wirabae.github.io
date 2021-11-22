@@ -1,0 +1,163 @@
+/*------------------------------------------------------------------------
+# Free Block HTML Templates - Oct 17, 2017
+# ------------------------------------------------------------------------
+# Designed & coded by Awe7 Team
+# Websites:  http://www.awe7.com -  Email: info@awe7.com
+--------------------------------------------------------------------------
+
+ 1. pricing-02
+--------------------------------------------------------------------------------*/
+
+.pricing-02__module {
+    position: relative;
+    margin-bottom: 30px;
+    background-color: #fff;
+    text-align: center;
+    transition: all .4s ease;
+}
+
+.pricing-02__module:before, .pricing-02__module:after,
+.pricing-02__module .pricing-02__header:before,
+.pricing-02__module .pricing-02__header:after {
+    content: "";
+    position: absolute;
+    z-index: 10000000;
+    background-color: #0850a5;
+    transition: -webkit-transform .3s cubic-bezier(.4, 0, .2, 1);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1),
+                -webkit-transform .3s cubic-bezier(.4, 0, .2, 1);
+    transition: transform .3s cubic-bezier(.4, 0, .2, 1),
+                -webkit-transform .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.pricing-02__module:before, .pricing-02__module:after {
+    width: 3px;
+    height: 100%;
+    top: 0;
+    -webkit-transform: scale3d(1, 0, 1);
+            transform: scale3d(1, 0, 1);
+}
+
+.pricing-02__module:before {
+    left: 0;
+    -webkit-transform-origin: 0% 100%;
+            transform-origin: 0% 100%;
+}
+
+.pricing-02__module:after {
+    right: 0;
+    -webkit-transform-origin: 100% 0;
+            transform-origin: 100% 0;
+}
+
+.pricing-02__module:hover:before, .pricing-02__module:hover:after {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+    transition-duration: .4s;
+}
+
+.pricing-02__header {
+    padding: 45px 0 0;
+    margin-bottom: 30px;
+}
+
+.pricing-02__header:before, .pricing-02__header:after {
+    height: 3px;
+    width: 100%;
+    left: 0;
+    -webkit-transform: scale3d(0, 1, 1);
+            transform: scale3d(0, 1, 1);
+}
+
+.pricing-02__header:before {
+    top: 0;
+    -webkit-transform-origin: 100% 0;
+            transform-origin: 100% 0;
+}
+
+.pricing-02__header:after {
+    bottom: 0;
+    -webkit-transform-origin: 0 100%;
+            transform-origin: 0 100%;
+}
+
+.pricing-02__module:hover .pricing-02__header:before,
+.pricing-02__module:hover .pricing-02__header:after {
+    -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+    transition-duration: .4s;
+}
+
+.pricing-02__title {
+    color: #333;
+    font-family: "Hind", sans-serif;
+    font-weight: 600;
+    font-size: 30px;
+    margin: 0;
+}
+
+.pricing-02__price {
+    font-size: 90px;
+    line-height: 1;
+    color: #0850a5;
+}
+
+.pricing-02__price sup {
+    font-size: 40px;
+    top: -0.9em;
+}
+
+.pricing-02__unit {
+    color: #656565;
+    padding-bottom: 40px;
+    margin: 0 30px 35px;
+    border-bottom: 1px dashed #d7d7d7;
+}
+
+.pricing-02__list {
+    padding: 0 0 40px;
+    margin: 0;
+    color: #555;
+}
+
+.pricing-02__list li {
+    list-style: none;
+    padding-bottom: 5px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.pricing-02__footer {
+    padding: 0 0 40px;
+}
+
+.pricing-02__footer .btn {
+    background-color: #0850a5;
+    color: #fff;
+    padding: 10px 45px;
+}
+
+.pricing-02__footer .btn:hover {
+    background-color: #042d5c;
+}
+
+.pricing-02__footer .btn-rounded {
+    border-radius: 25px;
+}
+
+.awe-skin-dark .pricing-02__module {
+    background-color: rgba(255, 255, 255, .9);
+    color: #1b1b1b;
+}
+
+.awe-skin-dark .pricing-02__title {
+    color: #1b1b1b;
+}
+
+@media (max-width: 991px) {
+    .pricing-02__module {
+        max-width: 480px;
+        margin: 0 auto 30px;
+    }
+}
