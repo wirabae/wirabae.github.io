@@ -16,7 +16,7 @@ jQuery(document).ready(function() {
 });
 
 	// cowntdown function. Set the date by modifying the date in next line (June 1, 2012 00:00:00):
-	var austDay = new Date("December 31, 2018 00:00:00");
+	var austDay = new Date("December 31, 2021 00:00:00");
 		$('#countdown').countdown({until: austDay, layout: '<div class="item"><p>{dn}</p> {dl}</div> <div class="item"><p>{hn}</p> {hl}</div> <div class="item"><p>{mn}</p> {ml}</div> <div class="item"><p>{sn}</p> {sl}</div>'});
 		$('#year').text(austDay.getFullYear());
 		
