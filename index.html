@@ -17,6 +17,49 @@
 		<!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		<![endif]-->
+		
+		<meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Staatliches&display=swap" rel="stylesheet">
+  <style media="screen">
+body {
+    text-align: center;
+    background: #transparent;
+    font-family: sans-serif;
+    font-weight: lighter;
+}
+
+#timer {
+    font-size: 4em;
+    font-weight: 100;
+    color: white;
+    padding: 20px;
+    width: 700px;
+    color: white;
+    
+}
+
+#timer div {
+    display: inline-block;
+    min-width: 90px;
+    padding: 15px;
+    background: #transparent;
+    border-radius: 10px;
+    border: 2px solid #transparent;
+    margin: 15px;
+}
+
+#timer div span {
+    color: #ffffff;
+    display: block;
+    margin-top: 15px;
+    font-size: .35em;
+    font-weight: 400;
+}
+  </style>
+
+		
+		
+		
 	</head>
 	
 	<body>
@@ -30,17 +73,45 @@
 					<div class="container">
 						
 						<!-- comming-soon-01 -->
-						<div class="comming-soon-01">
+						<div class="comming-soon-01" id="timer">
 							<h3 class="comming-soon-01__title">We're coming soon</h3>
 							<p class="comming-soon-01__desc">We are working on our website and will be online again. Stay tuned!</p>
 							
-							<!-- countdown__module hide undefined -->
+							<!-- countdown__module hide undefined
 							<div class="countdown__module hide undefined" data-date="2022/1/1">
 								<p><span>%D</span> Days</p>
 								<p><span>%H</span> Hours</p>
 								<p><span>%M</span> Minutes</p>
 								<p><span>%S</span> Seconds</p>
-							</div><!-- End / countdown__module hide undefined -->
+							</div> End / countdown__module hide undefined -->
+							
+							
+<script type="text/javascript">
+function updateTimer() {
+    future = Date.parse("jan, 2021 00:00:00");
+    now = new Date();
+    diff = future - now;
+
+    days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    hours = Math.floor(diff / (1000 * 60 * 60));
+    mins = Math.floor(diff / (1000 * 60));
+    secs = Math.floor(diff / 1000);
+
+    d = days;
+    h = hours - days * 24;
+    m = mins - hours * 60;
+    s = secs - mins * 60;
+
+    document.getElementById("timer")
+        .innerHTML =
+        '<div>' + d + '<span>Days</span></div>' +
+        '<div>' + h + '<span>Hours</span></div>' +
+        '<div>' + m + '<span>Minutes</span></div>' +
+        '<div>' + s + '<span>Seconds</span></div>';
+}
+setInterval('updateTimer()', 1000);
+</script>	
+							
 							
 						</div><!-- End / comming-soon-01 -->
 						
