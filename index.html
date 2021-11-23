@@ -29,7 +29,12 @@
             background-attachment: fixed;
             height: 100%;
         }
-		   
+      :before {
+            content: '';
+            filter: blur(2px);
+	    -webkit-filter: blur(2px) ;
+            z-index: -1;
+        }
              </style>
 	    
 	    
