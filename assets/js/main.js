@@ -1,21 +1,134 @@
-
-
-
-$(function () {
+(function($) {
 "use strict";
+window.startComingSoon = function() {
 
-	//Countdown
-
-    $('[data-countdown]').each(function () {
-		var $this = $(this),
-			finalDate = $(this).data('countdown');
-		$this.countdown(finalDate, function (event) {
-			$this.html(event.strftime('<div class="countdown d-flex"><div class="single-count-content"><span class="count">%D</span><p class="text">Days</p></div><div class="single-count-content"><span class="count">%H</span><p class="text">Hours</p></div><div class="single-count-content"><span class="count">%M</span><p class="text">Minutes</p></div><div class="single-count-content"><span class="count">%S</span><p class="text">Seconds</p></div></div>'));
-		});
+	/**
+	 * Countdown
+	 */
+	$('.countdown__module').each(function() {
+		var self = $(this),
+			_date = self.attr('data-date'),
+			_strf = self.html();
+		self.countdown(_date, function(event) {
+		  	self.html(event.strftime(_strf));
+		}).removeClass("hide");
 	});
 
-	// WOW active
-	new WOW().init();
+	particlesJS("particles-js", {
+		"particles": {
+			"number": {
+				"value": 80,
+				"density": {
+				"enable": true,
+				"value_area": 800
+				}
+			},
+			"color": {
+				"value": "#ffffff"
+			},
+			"shape": {
+				"type": "circle",
+				"stroke": {
+				"width": 0,
+				"color": "#000000"
+				},
+				"polygon": {
+				"nb_sides": 5
+				},
+				"image": {
+				"src": "img/github.svg",
+				"width": 100,
+				"height": 100
+				}
+			},
+			"opacity": {
+				"value": 0.5,
+				"random": false,
+				"anim": {
+				"enable": false,
+				"speed": 1,
+				"opacity_min": 0.1,
+				"sync": false
+				}
+			},
+			"size": {
+				"value": 3,
+				"random": true,
+				"anim": {
+				"enable": false,
+				"speed": 40,
+				"size_min": 0.1,
+				"sync": false
+				}
+			},
+			"line_linked": {
+				"enable": true,
+				"distance": 150,
+				"color": "#ffffff",
+				"opacity": 0.4,
+				"width": 1
+			},
+			"move": {
+				"enable": true,
+				"speed": 6,
+				"direction": "none",
+				"random": false,
+				"straight": false,
+				"out_mode": "out",
+				"bounce": false,
+				"attract": {
+				"enable": false,
+				"rotateX": 600,
+				"rotateY": 1200
+				}
+			}
+			},
+			"interactivity": {
+			"detect_on": "canvas",
+			"events": {
+				"onhover": {
+				"enable": true,
+				"mode": "repulse"
+				},
+				"onclick": {
+				"enable": true,
+				"mode": "push"
+				},
+				"resize": true
+			},
+			"modes": {
+				"grab": {
+				"distance": 400,
+				"line_linked": {
+					"opacity": 1
+				}
+				},
+				"bubble": {
+				"distance": 400,
+				"size": 40,
+				"duration": 2,
+				"opacity": 8,
+				"speed": 3
+				},
+				"repulse": {
+				"distance": 200,
+				"duration": 0.4
+				},
+				"push": {
+				"particles_nb": 4
+				},
+				"remove": {
+				"particles_nb": 2
+				}
+			}
+		},
+		"retina_detect": true
+	})
 
-});	
+
+}
+startComingSoon();
+
+})(jQuery);
+
 
