@@ -1079,7 +1079,7 @@ main.main-14 .main-wrapper.demo-14 {
       -ms-flex-pack: center;
           justify-content: center;
   font-family: "Roboto", sans-serif;
-  color: #3E2945;
+  color: #fff; 
   position: relative;
 }
 
@@ -1235,7 +1235,7 @@ main.main-14 .main-wrapper.demo-14 .content-wrapper .countdown .single-count-con
 main.main-14 .main-wrapper.demo-14 .content-wrapper .countdown .single-count-content::after {
   content: ':';
   font-size: 50px;
-  color: #3E2945;
+  color: #FFF;
   position: absolute;
   top: -5px;
   right: 0;
