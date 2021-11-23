@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Particles effect</title>
+		<title>Official Wira Bae</title>
 <!--
 Coming2Live series free coming soon templates!
 HTML version by Awe7 (http://awe7.com/)
@@ -23,16 +23,50 @@ https://wordpress.org/plugins/coming2live/
 		<link rel="stylesheet" type="text/css" id="app-stylesheet" href="assets/css/main.css"><!--[if lt IE 9]>
 			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		<![endif]-->
-		
-		
-		 
+
+<meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css?family=Staatliches&display=swap" rel="stylesheet">
+  <style media="screen">
+body {
+    text-align: center;
+    background: #transparent;
+    font-family: sans-serif;
+    font-weight: lighter;
+}
+
+#timer {
+    font-size: 4em;
+    font-weight: 100;
+    color: white;
+    padding: 20px;
+    width: 700px;
+    color: white;
+    
+}
+
+#timer div {
+    display: inline-block;
+    min-width: 90px;
+    padding: 15px;
+    background: #transparent;
+    border-radius: 10px;
+    border: 2px solid #transparent;
+    margin: 15px;
+}
+
+#timer div span {
+    color: #ffffff;
+    display: block;
+    margin-top: 15px;
+    font-size: .35em;
+    font-weight: 400;
+}
+  </style>
+
+
 	</head>
 	
 	<body>
-		
-		
-		
-		
 		<div class="page-wrap" id="root">
 			<!-- Content-->
 			<div class="md-content">
@@ -45,7 +79,7 @@ https://wordpress.org/plugins/coming2live/
 					
 					<!-- header -->
 					<div class="header">
-						<div class="header__left"><span>90 Queen St Melbourne Vic. AU</span><span>+628xxxxxx9696</span><span>info@awe7.com</span>
+						<div class="header__left"><span>South Sumatra, Indonesia</span><span>+628xxxxxx9696</span><span>oxxxwiraxxxa@gmail.com</span>
 						</div>
 						<div class="header__social">
 							
@@ -82,13 +116,42 @@ https://wordpress.org/plugins/coming2live/
 								</div>
 							</div>
 							
-							<!-- countdown__module hide undefined -->
+							<!-- countdown__module hide undefined
 							<div class="countdown__module hide undefined" data-date="2022/1/1">
 								<p><span>%D</span> Days</p>
 								<p><span>%H</span> Hours</p>
 								<p><span>%M</span> Minutes</p>
 								<p><span>%S</span> Seconds</p>
-							</div><!-- End / countdown__module hide undefined -->
+							</div> End / countdown__module hide undefined -->
+
+<center>
+							<div id="timer"></div>
+<script type="text/javascript">
+function updateTimer() {
+    future = Date.parse("jan, 2021 00:00:00");
+    now = new Date();
+    diff = future - now;
+
+    days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    hours = Math.floor(diff / (1000 * 60 * 60));
+    mins = Math.floor(diff / (1000 * 60));
+    secs = Math.floor(diff / 1000);
+
+    d = days;
+    h = hours - days * 24;
+    m = mins - hours * 60;
+    s = secs - mins * 60;
+
+    document.getElementById("timer")
+        .innerHTML =
+        '<div>' + d + '<span>Days</span></div>' +
+        '<div>' + h + '<span>Hours</span></div>' +
+        '<div>' + m + '<span>Minutes</span></div>' +
+        '<div>' + s + '<span>Seconds</span></div>';
+}
+setInterval('updateTimer()', 1000);
+</script>	
+</center>
 							
 							<div class="service-wrapper">
 								
