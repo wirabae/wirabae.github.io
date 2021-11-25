@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Membuat Desain Flip Clock Menggunakan jQuery</title>
+	<link rel="stylesheet" href="flipclock.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body class="bg-secondary">
+	<center>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-md-6 offset-md-3">
+				<h1 class="text-uppercase text-center my-4 text-light"></h1>
+			<div class="clock" style="margin:10em;"></div>
+			<div class="message"></div>
+			<button class="start">Start Clock</button>
+			</div>
+		</div>
+	</div>
+	</centers>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+	<script src="flipclock.js"></script>
+	<script type="text/javascript">
+		var clock;
+		
+		$(document).ready(function() {
+			
+			clock = $('.clock').FlipClock(3600, {
+		        clockFace: 'MinuteCounter',
+		        countdown: true,
+		        autoStart: false,
+		        callbacks: {
+		        	start: function() {
+		        		$('.message').html('The clock has started!');
+		        	}
+		        }
+		    });
+
+		    $('.start').click(function(e) {
+
+		    	clock.start();
+		    });
+
+		});
+	</script>
+</body>
+</html>
