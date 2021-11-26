@@ -10,38 +10,41 @@
   <title>Official | Wira Bae</title>
 </head>
 <body>
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutorial HTML</title>
-    <style>
-        body{
-            background-image: url(./person-984282_1280.jpg);
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-attachment: fixed;
-            height: 100%;
-        }
-        .title{
-            text-align: center;
-            font-size: 2.5em;
-            color: #000;
-        }
- 
-         
-    </style>
-</head>
-<body>
-   <h1 class="title">
-       Ini background fullscreen
-   </h1>
-</body>
-</html>
   
+  
+  <script>
+//<![CDATA[
+var elem = document.documentElement;
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+  document.getElementById("openfull").style.display = "none";
+  document.getElementById("exitfull").style.display = "block";
+}
 
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+  }
+  document.getElementById("openfull").style.display = "block";
+  document.getElementById("exitfull").style.display = "none";
+}
+//]]>
+</script>
+  
   <main><center>
     <h1>KAMI SEGERA DATANG<p>KAMI BEKERJA DI SITUS WEB KAMI DAN AKAN ONLINE LAGI. PANTAU TERUS!</h1></center>
     <div class="countdown">
