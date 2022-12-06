@@ -1,8 +1,8 @@
-$('#myCarousel').carousel({
+$('#myCarousell').carousel({
     interval: 1000
 })
 
-$('.carousel .carousel-item').each(function() {
+$('.carousell .carousel-item').each(function() {
     var minPerSlide = 4;
     var next = $(this).next();
     if (!next.length) {
