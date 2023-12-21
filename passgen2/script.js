@@ -63,6 +63,44 @@ const copyPassword = () => {
     }, 1500);
 }
 
-copyIcon.addEventListener("click", copyPassword);
+
+
+easyToSayRadio.addEventListener('change', function () {
+    if (this.checked) {
+        uppercaseCheckbox.checked = true;
+        lowercaseCheckbox.checked = true;
+
+        numbersCheckbox.checked = false;
+        symbolsCheckbox.checked = false;
+
+        numbersCheckbox.disabled = true;
+        symbolsCheckbox.disabled = true;
+    }
+});
+
+easyToReadRadio.addEventListener('change', function () {
+    if (this.checked) {
+        uppercaseCheckbox.checked = true;
+        lowercaseCheckbox.checked = true;
+
+        numbersCheckbox.checked = false;
+        symbolsCheckbox.checked = false;
+
+        numbersCheckbox.disabled = false;
+        symbolsCheckbox.disabled = false;
+    }
+});
+
+allCharactersRadio.addEventListener('change', function () {
+    if (this.checked) {
+        uppercaseCheckbox.checked = true;
+        lowercaseCheckbox.checked = true;
+        numbersCheckbox.checked = true;
+        symbolsCheckbox.checked = true;
+
+        numbersCheckbox.disabled = false;
+        symbolsCheckbox.disabled = false;
+    }
+});copyIcon.addEventListener("click", copyPassword);
 lengthSlider.addEventListener("input", updateSlider);
 generateBtn.addEventListener("click", generatePassword);
