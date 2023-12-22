@@ -9,7 +9,7 @@ const characters = {
     lowercase: "abcdefghijklmnopqrstuvwxyz",
     uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
     numbers: "0123456789",
-    symbols: "!$%&|[](){}:;.,*+-#@<>~'?_/`\="
+    symbols: "!$%&|[](){}:;.,*+-#@<>~"
 }
 
 const generatePassword = () => {
@@ -62,54 +62,6 @@ const copyPassword = () => {
         copyIcon.style.color = "#707070";
     }, 1500);
 }
-
-
-const easyToSayRadio = document.getElementById('easy-to-say');
-const easyToReadRadio = document.getElementById('easy-to-read');
-const allCharactersRadio = document.getElementById('all-characters');
-
-const uppercaseCheckbox = document.getElementById('uppercase');
-const lowercaseCheckbox = document.getElementById('lowercase');
-const numbersCheckbox = document.getElementById('numbers');
-const symbolsCheckbox = document.getElementById('symbols');
-
-easyToSayRadio.addEventListener('change', function () {
-    if (this.checked) {
-        uppercaseCheckbox.checked = true;
-        lowercaseCheckbox.checked = true;
-
-        numbersCheckbox.checked = false;
-        symbolsCheckbox.checked = false;
-
-        numbersCheckbox.disabled = true;
-        symbolsCheckbox.disabled = true;
-    }
-});
-
-easyToReadRadio.addEventListener('change', function () {
-    if (this.checked) {
-        uppercaseCheckbox.checked = true;
-        lowercaseCheckbox.checked = true;
-
-        numbersCheckbox.checked = false;
-        symbolsCheckbox.checked = false;
-
-        numbersCheckbox.disabled = false;
-        symbolsCheckbox.disabled = false;
-    }
-});
-
-allCharactersRadio.addEventListener('change', function () {
-    if (this.checked) {
-        uppercaseCheckbox.checked = true;
-        lowercaseCheckbox.checked = true;
-        numbersCheckbox.checked = true;
-        symbolsCheckbox.checked = true;
-
-        numbersCheckbox.disabled = false;
-        symbolsCheckbox.disabled = false;
-    }
-});
 
 copyIcon.addEventListener("click", copyPassword);
 lengthSlider.addEventListener("input", updateSlider);
