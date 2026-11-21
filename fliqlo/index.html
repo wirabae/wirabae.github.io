@@ -1,33 +1,457 @@
-var CACHE_NAME = "flip-clock-v1";
-var ASSETS = ["./", "./index.html"];
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Flip Clock" />
+  <title>Flip Clock — Helvetica Edition</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-self.addEventListener("install", function (event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      return cache.addAll(ASSETS);
-    })
-  );
-  self.skipWaiting();
-});
+    :root {
+      --bg: #0b0c0e;
+      --top-bg: #1e222a;
+      --bottom-bg: #171a20;
+      --text: #f5f6f8;
+      --muted: #9aa2b1;
+      --line: rgba(0, 0, 0, 0.72);
+      --btn-bg: rgba(255, 255, 255, 0.08);
+      --btn-border: rgba(255, 255, 255, 0.16);
 
-self.addEventListener("activate", function (event) {
-  event.waitUntil(
-    caches.keys().then(function (keys) {
-      return Promise.all(
-        keys
-          .filter(function (k) { return k !== CACHE_NAME; })
-          .map(function (k) { return caches.delete(k); })
-      );
-    })
-  );
-  self.clients.claim();
-});
+      --unit-w: 62px;
+      --unit-h: 88px;
+      --font-sz: 54px;
+      --colon-sz: 42px;
+      --gap: 6px;
+      --radius: 10px;
+      --flip-ms: 520ms;
+    }
 
-self.addEventListener("fetch", function (event) {
-  if (event.request.method !== "GET") return;
-  event.respondWith(
-    caches.match(event.request).then(function (cached) {
-      return cached || fetch(event.request);
-    })
-  );
-});
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: calc(12px + env(safe-area-inset-top));
+      padding-right: calc(14px + env(safe-area-inset-right));
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+      padding-left: calc(14px + env(safe-area-inset-left));
+    }
+
+    .clock-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--gap);
+      max-width: 100%;
+    }
+
+    .colon {
+      font-size: var(--colon-sz);
+      font-weight: 700;
+      line-height: 1;
+      color: var(--muted);
+      padding-bottom: 4px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .flip-unit {
+      position: relative;
+      width: var(--unit-w);
+      height: var(--unit-h);
+      border-radius: var(--radius);
+      background: var(--top-bg);
+      box-shadow:
+        0 12px 24px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      -webkit-perspective: 500px;
+      perspective: 500px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    /* Garis lipatan tengah */
+    .flip-unit::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 2px;
+      margin-top: -1px;
+      background: var(--line);
+      z-index: 6;
+      pointer-events: none;
+    }
+
+    .half {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+    }
+
+    .half span {
+      font-size: var(--font-sz);
+      line-height: var(--unit-h);
+      height: var(--unit-h);
+      display: block;
+      width: 100%;
+      text-align: center;
+      letter-spacing: -0.03em;
+    }
+
+    .half.top,
+    .flip-top {
+      top: 0;
+      background: var(--top-bg);
+      border-top-left-radius: var(--radius);
+      border-top-right-radius: var(--radius);
+      align-items: flex-start;
+    }
+
+    .half.top span,
+    .flip-top span {
+      margin-top: 0;
+    }
+
+    .half.bottom,
+    .flip-bottom {
+      bottom: 0;
+      background: var(--bottom-bg);
+      border-bottom-left-radius: var(--radius);
+      border-bottom-right-radius: var(--radius);
+      align-items: flex-end;
+    }
+
+    .half.bottom span,
+    .flip-bottom span {
+      margin-top: calc(var(--unit-h) * -0.5);
+    }
+
+    /* Layer statis */
+    .static-top { z-index: 1; }
+    .static-bottom { z-index: 2; }
+
+    /* Layer animasi lipat */
+    .flip-top {
+      z-index: 4;
+      -webkit-transform-origin: 50% 100%;
+      transform-origin: 50% 100%;
+    }
+
+    .flip-bottom {
+      z-index: 3;
+      -webkit-transform-origin: 50% 0%;
+      transform-origin: 50% 0%;
+      -webkit-transform: rotateX(90deg);
+      transform: rotateX(90deg);
+    }
+
+    .flip-unit.is-flipping .flip-top {
+      -webkit-animation: flipTop var(--flip-ms) ease-in forwards;
+      animation: flipTop var(--flip-ms) ease-in forwards;
+    }
+
+    .flip-unit.is-flipping .flip-bottom {
+      -webkit-animation: flipBottom var(--flip-ms) ease-out forwards;
+      animation: flipBottom var(--flip-ms) ease-out forwards;
+    }
+
+    @-webkit-keyframes flipTop {
+      0% {
+        -webkit-transform: rotateX(0deg);
+        box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0);
+      }
+      100% {
+        -webkit-transform: rotateX(-90deg);
+        box-shadow: inset 0 -10px 18px rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    @keyframes flipTop {
+      0% {
+        transform: rotateX(0deg);
+        box-shadow: inset 0 -4px 10px rgba(0, 0, 0, 0);
+      }
+      100% {
+        transform: rotateX(-90deg);
+        box-shadow: inset 0 -10px 18px rgba(0, 0, 0, 0.55);
+      }
+    }
+
+    @-webkit-keyframes flipBottom {
+      0% {
+        -webkit-transform: rotateX(90deg);
+      }
+      60% {
+        -webkit-transform: rotateX(90deg);
+      }
+      100% {
+        -webkit-transform: rotateX(0deg);
+      }
+    }
+
+    @keyframes flipBottom {
+      0% {
+        transform: rotateX(90deg);
+      }
+      60% {
+        transform: rotateX(90deg);
+      }
+      100% {
+        transform: rotateX(0deg);
+      }
+    }
+
+    .meta-bar {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .ampm {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      min-width: 34px;
+      text-align: center;
+    }
+
+    .btn {
+      background: var(--btn-bg);
+      color: var(--text);
+      border: 1px solid var(--btn-border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    /* iPhone layar lebih lebar (Plus / Max / Pro Max portrait) */
+    @media (min-width: 414px) {
+      :root {
+        --unit-w: 76px;
+        --unit-h: 108px;
+        --font-sz: 68px;
+        --colon-sz: 52px;
+        --gap: 8px;
+        --radius: 12px;
+      }
+    }
+
+    /* Mode landscape di iPhone standar / Pro */
+    @media (orientation: landscape) and (max-height: 450px) {
+      :root {
+        --unit-w: 96px;
+        --unit-h: 136px;
+        --font-sz: 88px;
+        --colon-sz: 64px;
+        --gap: 10px;
+        --radius: 14px;
+      }
+      .meta-bar {
+        margin-top: 10px;
+      }
+    }
+
+    /* Mode landscape di iPhone layar besar (Plus / Max / Pro Max) */
+    @media (orientation: landscape) and (min-width: 800px) and (max-height: 460px) {
+      :root {
+        --unit-w: 122px;
+        --unit-h: 170px;
+        --font-sz: 112px;
+        --colon-sz: 80px;
+        --gap: 14px;
+        --radius: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="clock-wrap" aria-live="polite">
+    <div class="flip-unit" id="unit-h1"></div>
+    <div class="flip-unit" id="unit-h2"></div>
+    <div class="colon">:</div>
+    <div class="flip-unit" id="unit-m1"></div>
+    <div class="flip-unit" id="unit-m2"></div>
+    <div class="colon">:</div>
+    <div class="flip-unit" id="unit-s1"></div>
+    <div class="flip-unit" id="unit-s2"></div>
+  </main>
+
+  <div class="meta-bar">
+    <span class="ampm" id="ampmLabel"></span>
+    <button type="button" class="btn" id="modeBtn">24 Jam</button>
+    <button type="button" class="btn" id="secBtn">Detik: Aktif</button>
+  </div>
+
+  <script>
+    (function () {
+      var is24Hour = true;
+      var showSeconds = true;
+      var lastValues = {};
+
+      var units = {
+        h1: document.getElementById("unit-h1"),
+        h2: document.getElementById("unit-h2"),
+        m1: document.getElementById("unit-m1"),
+        m2: document.getElementById("unit-m2"),
+        s1: document.getElementById("unit-s1"),
+        s2: document.getElementById("unit-s2")
+      };
+
+      var ampmEl = document.getElementById("ampmLabel");
+      var modeBtn = document.getElementById("modeBtn");
+      var secBtn = document.getElementById("secBtn");
+      var secColons = document.querySelectorAll(".colon");
+
+      function buildUnit(el, initialChar) {
+        el.innerHTML =
+          '<div class="half top static-top"><span>' + initialChar + '</span></div>' +
+          '<div class="half bottom static-bottom"><span>' + initialChar + '</span></div>' +
+          '<div class="half top flip-top"><span>' + initialChar + '</span></div>' +
+          '<div class="half bottom flip-bottom"><span>' + initialChar + '</span></div>';
+      }
+
+      function flipTo(key, nextChar) {
+        var el = units[key];
+        var prevChar = lastValues[key];
+
+        if (prevChar === undefined) {
+          buildUnit(el, nextChar);
+          lastValues[key] = nextChar;
+          return;
+        }
+
+        if (prevChar === nextChar) return;
+
+        var topStatic = el.querySelector(".static-top span");
+        var bottomStatic = el.querySelector(".static-bottom span");
+        var topFlip = el.querySelector(".flip-top span");
+        var bottomFlip = el.querySelector(".flip-bottom span");
+
+        // Angka statis atas langsung ke nilai baru agar saat kartu atas terlipat, angka baru sudah siap
+        topStatic.textContent = nextChar;
+        // Kartu atas yang terlipat membawa angka lama
+        topFlip.textContent = prevChar;
+        // Kartu bawah yang terlipat membuka angka baru
+        bottomFlip.textContent = nextChar;
+        // Angka statis bawah tetap menampilkan angka lama sampai kartu bawah selesai melipat
+        bottomStatic.textContent = prevChar;
+
+        el.classList.remove("is-flipping");
+        // Memicu reflow agar animasi selalu terputar ulang
+        void el.offsetWidth;
+        el.classList.add("is-flipping");
+
+        setTimeout(function () {
+          bottomStatic.textContent = nextChar;
+          el.classList.remove("is-flipping");
+          lastValues[key] = nextChar;
+        }, 540);
+      }
+
+      function pad2(num) {
+        return num < 10 ? "0" + num : String(num);
+      }
+
+      function updateClock() {
+        var now = new Date();
+        var rawHour = now.getHours();
+        var displayHour = rawHour;
+        var period = "";
+
+        if (!is24Hour) {
+          period = rawHour >= 12 ? "PM" : "AM";
+          displayHour = rawHour % 12;
+          if (displayHour === 0) displayHour = 12;
+        }
+
+        var hStr = pad2(displayHour);
+        var mStr = pad2(now.getMinutes());
+        var sStr = pad2(now.getSeconds());
+
+        flipTo("h1", hStr.charAt(0));
+        flipTo("h2", hStr.charAt(1));
+        flipTo("m1", mStr.charAt(0));
+        flipTo("m2", mStr.charAt(1));
+
+        if (showSeconds) {
+          flipTo("s1", sStr.charAt(0));
+          flipTo("s2", sStr.charAt(1));
+        }
+
+        ampmEl.textContent = is24Hour ? "" : period;
+      }
+
+      function applyVisibility() {
+        var displayVal = showSeconds ? "" : "none";
+        units.s1.style.display = displayVal;
+        units.s2.style.display = displayVal;
+        if (secColons.length > 1) {
+          secColons[1].style.display = displayVal;
+        }
+        secBtn.textContent = showSeconds ? "Detik: Aktif" : "Detik: Sembunyi";
+      }
+
+      modeBtn.addEventListener("click", function () {
+        is24Hour = !is24Hour;
+        modeBtn.textContent = is24Hour ? "24 Jam" : "12 Jam";
+        updateClock();
+      });
+
+      secBtn.addEventListener("click", function () {
+        showSeconds = !showSeconds;
+        applyVisibility();
+        if (showSeconds) updateClock();
+      });
+
+      if ("serviceWorker" in navigator && location.protocol === "https:") {
+        navigator.serviceWorker.register("./sw.js").catch(function () {});
+      }
+
+      updateClock();
+      setInterval(updateClock, 250);
+    })();
+  </script>
+</body>
+</html>
