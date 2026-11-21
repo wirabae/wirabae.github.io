@@ -1,194 +1,33 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Flip Clock" />
-  <title>Custom Flip Clock</title>
-  <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+var CACHE_NAME = "flip-clock-v1";
+var ASSETS = ["./", "./index.html"];
 
-    :root {
-      --bg: #0d0f12;
-      --card-bg: #1b1f26;
-      --text: #f3f4f6;
-      --btn-bg: #282e39;
-      --btn-border: #3a4252;
-      --card-size: 48px;
-      --colon-size: 38px;
-      --gap: 6px;
-      --pad-y: 12px;
-      --pad-x: 14px;
-      --radius: 10px;
-    }
+self.addEventListener("install", function (event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function (cache) {
+      return cache.addAll(ASSETS);
+    })
+  );
+  self.skipWaiting();
+});
 
-    body {
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      padding-top: calc(16px + env(safe-area-inset-top));
-      padding-right: calc(16px + env(safe-area-inset-right));
-      padding-bottom: calc(16px + env(safe-area-inset-bottom));
-      padding-left: calc(16px + env(safe-area-inset-left));
-    }
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(
+        keys
+          .filter(function (k) { return k !== CACHE_NAME; })
+          .map(function (k) { return caches.delete(k); })
+      );
+    })
+  );
+  self.clients.claim();
+});
 
-    .clock {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--gap);
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      max-width: 100%;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: var(--pad-y) var(--pad-x);
-      font-size: var(--card-size);
-      line-height: 1;
-      position: relative;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-      flex-shrink: 0;
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 50%;
-      height: 2px;
-      background: rgba(0, 0, 0, 0.45);
-      pointer-events: none;
-    }
-
-    .colon {
-      font-size: var(--colon-size);
-      line-height: 1;
-      opacity: 0.7;
-      user-select: none;
-      flex-shrink: 0;
-    }
-
-    .controls {
-      margin-top: 20px;
-      display: flex;
-      gap: 10px;
-    }
-
-    button {
-      background: var(--btn-bg);
-      color: #fff;
-      border: 1px solid var(--btn-border);
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Layar iPhone lebih lebar (Plus / Max / Pro Max atau landscape) */
-    @media (min-width: 414px) {
-      :root {
-        --card-size: 64px;
-        --colon-size: 50px;
-        --gap: 10px;
-        --pad-y: 16px;
-        --pad-x: 18px;
-        --radius: 12px;
-      }
-    }
-
-    /* Mode landscape di iPhone (tinggi layar terbatas, lebar luas) */
-    @media (orientation: landscape) and (max-height: 450px) {
-      :root {
-        --card-size: 84px;
-        --colon-size: 64px;
-        --gap: 12px;
-        --pad-y: 18px;
-        --pad-x: 22px;
-        --radius: 14px;
-      }
-      .controls {
-        margin-top: 14px;
-      }
-    }
-
-    /* Layar landscape lebar (iPhone Pro Max / iPhone besar) */
-    @media (orientation: landscape) and (min-width: 800px) and (max-height: 460px) {
-      :root {
-        --card-size: 112px;
-        --colon-size: 86px;
-        --gap: 16px;
-        --pad-y: 22px;
-        --pad-x: 28px;
-        --radius: 16px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="clock" aria-live="polite">
-    <div class="card" id="hh">00</div>
-    <div class="colon">:</div>
-    <div class="card" id="mm">00</div>
-    <div class="colon">:</div>
-    <div class="card" id="ss">00</div>
-  </div>
-
-  <div class="controls">
-    <button type="button" id="toggleFormat">Mode: 24 Jam</button>
-  </div>
-
-  <script>
-    (function () {
-      var is24Hour = true;
-      var hhEl = document.getElementById("hh");
-      var mmEl = document.getElementById("mm");
-      var ssEl = document.getElementById("ss");
-      var btnEl = document.getElementById("toggleFormat");
-
-      function pad(n) {
-        return n < 10 ? "0" + n : String(n);
-      }
-
-      function renderClock() {
-        var now = new Date();
-        var h = now.getHours();
-        if (!is24Hour) {
-          h = h % 12;
-          if (h === 0) h = 12;
-        }
-        hhEl.textContent = pad(h);
-        mmEl.textContent = pad(now.getMinutes());
-        ssEl.textContent = pad(now.getSeconds());
-      }
-
-      btnEl.addEventListener("click", function () {
-        is24Hour = !is24Hour;
-        btnEl.textContent = is24Hour ? "Mode: 24 Jam" : "Mode: 12 Jam";
-        renderClock();
-      });
-
-      renderClock();
-      setInterval(renderClock, 250);
-    })();
-  </script>
-</body>
-</html>
+self.addEventListener("fetch", function (event) {
+  if (event.request.method !== "GET") return;
+  event.respondWith(
+    caches.match(event.request).then(function (cached) {
+      return cached || fetch(event.request);
+    })
+  );
+});
